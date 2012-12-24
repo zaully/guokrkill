@@ -279,4 +279,10 @@ public class Status
         }
         return(mysql.updateBatchPlayers(strSQL));
     }
+
+    public static int updateLogs(int intGameNo, int intDayNo, string strLogs)
+    {
+        string strSQL = "insert into guokrhunt.GameLog(GameNo,DayNo,LogToday) values (" + intGameNo + "," + intDayNo + ",'" + strLogs + "')";
+        return mysql.runSql(strSQL);
+    }
 }

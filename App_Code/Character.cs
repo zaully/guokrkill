@@ -8,6 +8,12 @@ using System.Web;
 /// </summary>
 public class Character
 {
+    static int Werewolf = 8;
+    static int Priest = 4;
+    static int Hunter = 2;
+    static int Villager = 1;
+    static int Judge = 16;
+
     public string strCharacterName;
     public int intInitialRole;
     public int intRole;
@@ -74,6 +80,12 @@ public class Character
         cha.intDebuff2Counter = 0;
         cha.intDebuff3Counter = 0;
         cha.intDebuffCount = 1;
+        return cha;
+    }
+
+    public static Character setHunter(Character cha)
+    {
+        cha.intRole = Hunter;
         return cha;
     }
 

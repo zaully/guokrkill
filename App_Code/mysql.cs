@@ -11,18 +11,11 @@ using MySql.Data.MySqlClient;
 /// 
 public class mysql
 {
-
 	public mysql()
 	{
 		//
 		// TODO: Add constructor logic here
 		//
-
-        //string strConnection = "Server=" + strDataSource + ";Database=" + strDatabase + ";Uid=" + strDatabaseUserID + ";Pwd=" + strPW;
-	//string strConnection = "Database=guokrhunt;Data Source=localhost;User id=guokr;Password=P@$$w0rd";
-        //MySqlConnection mycon = new MySqlConnection(strConnection);
-        //mycon.Open();
-        //mycon.Close();
 	}
 
     public string getPlayerMd5Password(string strAccountName)
@@ -353,18 +346,21 @@ public class mysql
         return lstSpell;
     }
 
-    public static void runSql()
+    public static int runSql(string strSQL)
     {
         MySqlConnection myConnection = new MySqlConnection("Server=" + strDataSource + ";Database=" + strDatabase + ";Uid=" + strDatabaseUserID + ";Pwd=" + strPW);
         MySqlCommand myComm = new MySqlCommand("");
         myComm.Connection = myConnection;
+        myComm.CommandText = strSQL;
+        int intResult = -1;
         try
         {
             myConnection.Open();
-            myComm.ExecuteNonQuery();
+            intResult = myComm.ExecuteNonQuery();
         }
         catch
         {
         }
+        return intResult;
     }
 }

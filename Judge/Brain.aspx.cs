@@ -287,17 +287,17 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (rand.NextDouble() <= Spell.getChance(strPurge, splLstAllSpells) && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == 1)
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination] = Character.setCured(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += actLstActions[i].strCharacterName + "的净化成功，" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "的【感染】痊愈了" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】的净化成功，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】的【感染】痊愈了" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != -1)
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了净化，但" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "好像本来就很健康" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了净化，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】好像本来就很健康" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "的净化失败" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】的净化失败" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -308,12 +308,12 @@ public partial class Judge_Brain : System.Web.UI.Page
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination].dbDevourResist = 0.3;
                             chaLstAllCharacters[actLstActions[i].intDestination].dbInfestResist = 0.3;
-                            tbResult.Text += actLstActions[i].strCharacterName + "正在祈祷，获得了神的庇护" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】正在祈祷，获得了神的庇护" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "正在祈祷，但神没有回应" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】正在祈祷，但神没有回应" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -323,12 +323,12 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (rand.NextDouble() <= Spell.getChance(strConsecration, splLstAllSpells))
                         {
                             chaLstAllCharacters[actLstActions[i].intCharacter] = Character.setDead(chaLstAllCharacters[actLstActions[i].intCharacter]);
-                            tbResult.Text += actLstActions[i].strCharacterName + "奉献啦！！！" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】奉献啦！！！" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "奉献失败，倒霉，想死都不行" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】奉献失败，倒霉，想死都不行" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -339,12 +339,12 @@ public partial class Judge_Brain : System.Web.UI.Page
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination].dbDevourResist = 0.3;
                             chaLstAllCharacters[actLstActions[i].intDestination].dbInfestResist = 0.3;
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了神佑，狼人对" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "的攻击被削弱了。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了神佑，狼人对【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】的攻击被削弱了。" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "的神佑没能得到神的回应。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】的神佑没能得到神的回应。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -364,17 +364,17 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (rand.NextDouble() <= Spell.getChance(strDevourment, splLstAllSpells) - chaLstAllCharacters[actLstActions[i].intDestination].dbDevourResist && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1!=-1)
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination] = Character.setDead(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了吞噬，" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "死亡。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了吞噬，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】死亡。" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == -1)
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了吞噬，但" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "早已死亡。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了吞噬，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已死亡。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了吞噬，不过" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "幸运地逃过了一劫。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了吞噬，不过【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】幸运地逃过了一劫。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -384,22 +384,22 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (rand.NextDouble() <= Spell.getChance(strInfestation, splLstAllSpells) - chaLstAllCharacters[actLstActions[i].intDestination].dbInfestResist && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != -1 && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != 1)
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination] = Character.setInfested(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了感染，" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "现在的状态是【感染】。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】现在的状态是【感染】。" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == -1)
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了感染，但" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "早已死亡。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已死亡。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                         else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == 1)
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了感染，但" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "早已被感染了。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已被感染了。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了感染，不过" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "幸运地逃过了一劫。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，不过【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】幸运地逃过了一劫。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -419,17 +419,17 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (rand.NextDouble() <= Spell.getChance(strSilverBullet, splLstAllSpells) && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != -1)
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination] = Character.setDead(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了银弹，" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "死亡。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了银弹，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】死亡。" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == -1)
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了银弹，但" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "早已死亡。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了银弹，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已死亡。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "施放了银弹，不过" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "幸运地逃过了一劫。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了银弹，不过【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】幸运地逃过了一劫。" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -439,12 +439,12 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (rand.NextDouble() <= Spell.getChance(strHolyWater, splLstAllSpells)&&chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1==1)
                         {
                             chaLstAllCharacters[actLstActions[i].intDestination] = Character.setCured(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += actLstActions[i].strCharacterName + "喝下了圣水，【感染】的症状消失了。" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】喝下了圣水，【感染】的症状消失了。" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "喝下了圣水，咦？没什么效果啊。到底是圣水过期了还是他本来就没病？" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】喝下了圣水，咦？没什么效果啊。到底是圣水过期了还是他本来就没病？" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -458,12 +458,12 @@ public partial class Judge_Brain : System.Web.UI.Page
                             {
                                 intClueIndex = Character.clueAbout(chaLstAllCharacters, rand);
                             }
-                            tbResult.Text += actLstActions[i].strCharacterName + "使用了罗盘，获得了关于" + chaLstAllCharacters[intClueIndex].strCharacterName + "的真实线索！" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】使用了罗盘，获得了关于【" + chaLstAllCharacters[intClueIndex].strCharacterName + "】的真实线索！" + Environment.NewLine;
                             actLstActions[i].intResult = 1;
                         }
                         else
                         {
-                            tbResult.Text += actLstActions[i].strCharacterName + "使用了罗盘，咦？没有反应？" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】使用了罗盘，咦？没有反应？" + Environment.NewLine;
                             actLstActions[i].intResult = -1;
                         }
                     }
@@ -482,13 +482,13 @@ public partial class Judge_Brain : System.Web.UI.Page
                         if (actLstActions[j].strCharacterName == chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName)
                         {
                             actLstActions[i].intResult = 1;
-                            tbResult.Text += actLstActions[i].strCharacterName + "拜访了" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "，观察到对方不在家！" + Environment.NewLine;
+                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】拜访了【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】，结果对方不在家！" + Environment.NewLine;
                             break;
                         }
                     }
                     if (actLstActions[i].intResult == 0)
                     {
-                        tbResult.Text += actLstActions[i].strCharacterName + "拜访了" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "，双方进行了愉快的会谈！" + Environment.NewLine;
+                        tbResult.Text += "【" + actLstActions[i].strCharacterName + "】拜访了【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】，双方进行了愉快的会谈！" + Environment.NewLine;
                         actLstActions[i].intResult = 1;
                     }
                 }
@@ -516,11 +516,11 @@ public partial class Judge_Brain : System.Web.UI.Page
                     chaLstAllCharacters[i].intDebuff1Counter--;
                     chaLstAllCharacters[i].intDebuff1 = 0;
                     chaLstAllCharacters[i].intRole = Werewolf;
-                    tbResult.Text += chaLstAllCharacters[i].strCharacterName + "现在已经变身成为了【狼人】！";
+                    tbResult.Text += "【" + chaLstAllCharacters[i].strCharacterName + "】的身体产生变异，新的【狼人】出现了！";
                 }
                 else
                 {
-                    tbResult.Text += chaLstAllCharacters[i].strCharacterName + "的感染期还剩" + chaLstAllCharacters[i].intDebuff1Counter.ToString() + "天";
+                    tbResult.Text += "【" + chaLstAllCharacters[i].strCharacterName + "】的感染期还剩 " + Convert.ToString(chaLstAllCharacters[i].intDebuff1Counter + 1) + " 天";
                 }
             }
         }
@@ -531,7 +531,7 @@ public partial class Judge_Brain : System.Web.UI.Page
         Status.updateIntoDatabase(intGameNo, Convert.ToInt16(lDayNo.Text), chaLstAllCharacters);
         tbPlayerList.Text = ((Status)this.Session["Status"]).updateAll(intGameNo, intDayNo);
         newDay(intDayNo, ((Status)this.Session["Status"]));
-        //如果猎人死了要触发传承，在此处处理
+        Status.updateLogs(intGameNo, intDayNo, tbResult.Text);
     }
 
     protected void btnJudgeAction_Click(object sender, EventArgs e)
@@ -546,6 +546,11 @@ public partial class Judge_Brain : System.Web.UI.Page
         {
             int deadIndex = Character.findIndexForCharacter(ddlJudgeTarget.SelectedValue, ((Status)this.Session["Status"]).chaLstCharacter);
             ((Status)this.Session["Status"]).chaLstCharacter[deadIndex] = Character.setDead(((Status)this.Session["Status"]).chaLstCharacter[deadIndex]);
+        }
+        if (ddlJudgeAction.SelectedValue == strInheritance)
+        {
+            int index2beHunter = Character.findIndexForCharacter(ddlJudgeTarget.SelectedValue, ((Status)this.Session["Status"]).chaLstCharacter);
+            ((Status)this.Session["Status"]).chaLstCharacter[index2beHunter] = Character.setHunter(((Status)this.Session["Status"]).chaLstCharacter[index2beHunter]);
         }
         newDay(0, ((Status)this.Session["Status"]));
         tbPlayerList.Text = ((Status)this.Session["Status"]).updateFromStatus();

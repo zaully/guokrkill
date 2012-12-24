@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link href="~/Styles/Style.css" rel="Stylesheet" type="text/css" />
-    <title>果壳魅影上帝之脑0.8版</title>
+    <title>果壳魅影上帝之脑0.81版</title>
 </head>
 <body>
     <form id="form1" runat="server">
