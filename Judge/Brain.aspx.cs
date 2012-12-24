@@ -70,7 +70,14 @@ public partial class Judge_Brain : System.Web.UI.Page
             return;
         }
         string strArrayTemp = tbPlayerList.Text;
-        strArrayTemp.Replace(Environment.NewLine, "");
+        strArrayTemp = strArrayTemp.Replace(Environment.NewLine, "");
+        strArrayTemp = strArrayTemp.Replace("\t", "");
+        strArrayTemp = strArrayTemp.Replace(" ", "");
+        strArrayTemp = strArrayTemp.Replace("；", ";");
+        if (strArrayTemp[strArrayTemp.Length - 1] == ';')
+        {
+            strArrayTemp.Remove(strArrayTemp.Length - 1);
+        }
         string[] strArrayPlayers = strArrayTemp.Split(';');
         List<int> intListRole = new List<int>();
         tbPlayerList.Text = "";
@@ -164,17 +171,11 @@ public partial class Judge_Brain : System.Web.UI.Page
             if (thisStat.chaLstCharacter[i].intDebuff1 != -1)
             {
                 ddlSource.Items.Add(thisStat.chaLstCharacter[i].strCharacterName);
-                ddlTarget.Items.Add(thisStat.chaLstCharacter[i].strCharacterName);
                 ddlJudgeTarget.Items.Add(thisStat.chaLstCharacter[i].strCharacterName);
             }
         }
         ddlAction.Enabled = true;
-        ddlAction.Items.Clear();
         ddlAction.Items.Add("");
-        for (int i = 0; i < thisStat.splLstSpell.Count; i++)
-        {
-            ddlAction.Items.Add(thisStat.splLstSpell[i].strSpellName);
-        }
         btnAddAction.Enabled = true;
         lbActions.Items.Clear();
         btnJudgeAction.Enabled = true;
@@ -235,22 +236,7 @@ public partial class Judge_Brain : System.Web.UI.Page
         ddlTarget.SelectedValue = "";
         btnCalculate.Enabled = true;
     }
-    /*
-    protected void ddlSource_SelectedIndexChanged(object sender, EventArgs e)
-    {
-        tbResult.Text = "!!!!!!";
-        if (ddlSource.SelectedValue == "")
-        {
-            return;
-        }
-        ddlAction.Enabled = true;
-        List<string> strLstSpells= Character.getSpellList(ddlSource.SelectedValue, (Status)this.Session["Status"]);
-        ddlAction.Items.Add("");
-        for (int i = 0; i < strLstSpells.Count; i++)
-        {
-            ddlAction.Items.Add(strLstSpells[i]);
-        }
-    }*/
+
     protected void btnDeleteAction_Click(object sender, EventArgs e)
     {
         if (lbActions.SelectedValue == null)
@@ -554,5 +540,52 @@ public partial class Judge_Brain : System.Web.UI.Page
         }
         newDay(0, ((Status)this.Session["Status"]));
         tbPlayerList.Text = ((Status)this.Session["Status"]).updateFromStatus();
+    }
+    protected void ddlSource_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ddlAction.Items.Clear();
+        ddlAction.Items.Add("");
+        ddlTarget.Items.Clear();
+        ddlTarget.Items.Add("");
+        if (ddlSource.SelectedValue == "")
+        {
+            return;
+        }
+        Status thisStat = (Status)this.Session["Status"];
+        int intSourceIndex = Character.findIndexForCharacter(ddlSource.SelectedValue, thisStat.chaLstCharacter);
+        
+        for (int i = 0; i < thisStat.splLstSpell.Count; i++)
+        {
+            if (Spell.canCast(intSourceIndex, -1, i, thisStat))
+            {
+                ddlAction.Items.Add(thisStat.splLstSpell[i].strSpellName);
+            }
+        }
+    }
+    protected void ddlAction_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ddlTarget.Items.Clear();
+        ddlTarget.Items.Add("");
+        if (ddlAction.SelectedValue == "")
+        {
+            return;
+        }
+        Status thisStat = (Status)this.Session["Status"];
+        int intSourceIndex = Character.findIndexForCharacter(ddlSource.SelectedValue, thisStat.chaLstCharacter);
+        int intSpellIndex = -1;
+        for (int i = 0; i < thisStat.splLstSpell.Count; i++)
+        {
+            if (thisStat.splLstSpell[i].strSpellName == ddlAction.SelectedValue)
+            {
+                intSpellIndex = i;
+            }
+        }
+        for (int i = 0; i < thisStat.chaLstCharacter.Count; i++)
+        {
+            if (Spell.canCast(intSourceIndex, i, intSpellIndex, thisStat))
+            {
+                ddlTarget.Items.Add(thisStat.chaLstCharacter[i].strCharacterName);
+            }
+        }
     }
 }

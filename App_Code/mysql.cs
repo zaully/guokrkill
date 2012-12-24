@@ -11,12 +11,18 @@ using MySql.Data.MySqlClient;
 /// 
 public class mysql
 {
-	public mysql()
-	{
-		//
-		// TODO: Add constructor logic here
-		//
-	}
+    const string strDataSource = "";
+    //const string strDataSource = "";
+    const string strDatabase = "";
+    const string strDatabaseUserID = "";
+    const string strPW = "";
+
+    public mysql()
+    {
+	//
+	// TODO: Add constructor logic here
+	//
+    }
 
     public string getPlayerMd5Password(string strAccountName)
     {

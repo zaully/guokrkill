@@ -77,16 +77,20 @@ public class Spell
     {
         string strSource = Convert.ToString(statCurrent.chaLstCharacter[intSourceIndex].intRole, 2).PadLeft(9, '0');
         string strSourceAllowed = Convert.ToString(statCurrent.splLstSpell[intSpellIndex].intCaster, 2).PadLeft(9, '0');
-        string strTarget = Convert.ToString(statCurrent.chaLstCharacter[intTargetIndex].intRole, 2).PadLeft(9, '0');
+        string strTarget = "";
+        if (intTargetIndex != -1)
+        {
+            strTarget = Convert.ToString(statCurrent.chaLstCharacter[intTargetIndex].intRole, 2).PadLeft(9, '0');
+        }
         string strTargetAllowed = Convert.ToString(statCurrent.splLstSpell[intSpellIndex].intTarget, 2).PadLeft(9, '0');
-        if (intSourceIndex == intTargetIndex)
+        if (intSourceIndex == intTargetIndex && intTargetIndex != -1)
         {
             if (strTargetAllowed[1] == '0')
             {
                 return false;
             }
         }
-        if (intSourceIndex != intTargetIndex)
+        if (intSourceIndex != intTargetIndex && intTargetIndex != -1)
         {
             if (strTargetAllowed[2] == '0')
             {
@@ -101,12 +105,15 @@ public class Spell
                 return false;
             }
         }
-        intIndex = strTarget.IndexOf('1');
-        if (intIndex >= 0)
+        if (intTargetIndex != -1)
         {
-            if (strTargetAllowed[intIndex] == '0')
+            intIndex = strTarget.IndexOf('1');
+            if (intIndex >= 0)
             {
-                return false;
+                if (strTargetAllowed[intIndex] == '0')
+                {
+                    return false;
+                }
             }
         }
         return true;
