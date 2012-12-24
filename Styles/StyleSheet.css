@@ -1,0 +1,10 @@
+body { font-family:Verdana; font-size:14px; margin:0;}
+
+#container {margin:0 auto; width:100%;}
+#header { height:100px; background:#9c6; margin-bottom:5px;}
+#menu { height:30px; background:#693; margin-bottom:5px;}
+#mainContent { background:url(bg.gif) 0 0 repeat-y; overflow:auto; margin-bottom:5px;}
+#sidebar { float:left; width:200px;background:#cf9;}
+#content { margin-left:205px !important; margin-left:202px; height:auto !important; height:100px; background:#ffa;}
+#footer { height:60px; background:#9c6;}
+.clearfloat { clear:both; height:0; font-size: 1px; line-height: 0px;}

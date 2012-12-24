@@ -1,0 +1,39 @@
+.wholepage
+{
+    margin-left:auto;
+    margin-right:auto;
+    width:800px;
+    text-align:center;
+}
+
+.header
+{
+    text-align:left;
+    height:200px;
+}
+.content
+{
+    text-align:left;
+    font:10px;
+    height:500px;
+}
+.leftcolumn
+{
+    text-align:left;
+    float:left;
+    width:45%;
+}
+.rightcolumn
+{
+    text-align:left;
+    float:left;
+    width:54%;
+}
+.label
+{
+    text-align:left;
+}
+.alignright
+{
+    text-align:right;
+}
