@@ -2,7 +2,7 @@
 {
     margin-left:auto;
     margin-right:auto;
-    width:800px;
+    width:1000px;
     text-align:center;
 }
 
@@ -21,13 +21,13 @@
 {
     text-align:left;
     float:left;
-    width:45%;
+    width:55%;
 }
 .rightcolumn
 {
     text-align:left;
     float:left;
-    width:54%;
+    width:44%;
 }
 .label
 {
@@ -36,4 +36,5 @@
 .alignright
 {
     text-align:right;
+    margin-left: 40px;
 }

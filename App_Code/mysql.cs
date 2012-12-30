@@ -11,18 +11,18 @@ using MySql.Data.MySqlClient;
 /// 
 public class mysql
 {
-    const string strDataSource = "";
-    //const string strDataSource = "";
-    const string strDatabase = "";
-    const string strDatabaseUserID = "";
-    const string strPW = "";
+    //const string strDataSource = 
+    const string strDataSource = 
+    const string strDatabase = 
+    const string strDatabaseUserID = 
+    const string strPW = 
 
-    public mysql()
-    {
-	//
-	// TODO: Add constructor logic here
-	//
-    }
+	public mysql()
+	{
+		//
+		// TODO: Add constructor logic here
+		//
+	}
 
     public string getPlayerMd5Password(string strAccountName)
     {
@@ -150,7 +150,14 @@ public class mysql
         string strBatchInsertCommand = "";
         for (int i = 0; i < intListPlayerID.Count; i++)
         {
-            strBatchInsertCommand += "insert into guokrhunt.Character(GameNo,DayNo,PlayerID,CharacterName,InitialRole,CurrentRole,Status1,Status1Counter,Status2,Status2Counter,Status3,Status3Counter) values (" + intGameNo + ",0," + intListPlayerID[i] + ",'" + strListCharacterName[i] + "'," + intListRole[i] + "," + intListRole[i] + ",0,0,0,0,0,0);";
+            if (intListRole[i] == 2)
+            {
+                strBatchInsertCommand += "insert into guokrhunt.Character(GameNo,DayNo,PlayerID,CharacterName,InitialRole,CurrentRole,Status1,Status1Counter,Status2,Status2Counter,Status3,Status3Counter,HolyWaterCount) values (" + intGameNo + ",0," + intListPlayerID[i] + ",'" + strListCharacterName[i] + "'," + intListRole[i] + "," + intListRole[i] + ",0,0,0,0,0,0,1);";
+            }
+            else
+            {
+                strBatchInsertCommand += "insert into guokrhunt.Character(GameNo,DayNo,PlayerID,CharacterName,InitialRole,CurrentRole,Status1,Status1Counter,Status2,Status2Counter,Status3,Status3Counter) values (" + intGameNo + ",0," + intListPlayerID[i] + ",'" + strListCharacterName[i] + "'," + intListRole[i] + "," + intListRole[i] + ",0,0,0,0,0,0);";
+            }
         }
         MySqlCommand myComm = new MySqlCommand(strBatchInsertCommand);
         myComm.Connection = myConnection;
@@ -245,6 +252,9 @@ public class mysql
                 chaLstPlayers[chaLstPlayers.Count - 1].intDebuff1Counter = myPlayerReader.GetInt16(myPlayerReader.GetOrdinal("Status1Counter"));
                 chaLstPlayers[chaLstPlayers.Count - 1].intDebuff2Counter = myPlayerReader.GetInt16(myPlayerReader.GetOrdinal("Status2Counter"));
                 chaLstPlayers[chaLstPlayers.Count - 1].intDebuff3Counter = myPlayerReader.GetInt16(myPlayerReader.GetOrdinal("Status3Counter"));
+                chaLstPlayers[chaLstPlayers.Count - 1].intHolyWaterLimit = myPlayerReader.GetInt16(myPlayerReader.GetOrdinal("HolyWaterCount"));
+                chaLstPlayers[chaLstPlayers.Count - 1].intVisitLimit = myPlayerReader.GetInt16(myPlayerReader.GetOrdinal("VisitCount"));
+                chaLstPlayers[chaLstPlayers.Count - 1].intDeathCause = myPlayerReader.GetInt16(myPlayerReader.GetOrdinal("DeathCause"));
             }
         }
         catch

@@ -8,6 +8,21 @@ using System.Web;
 /// </summary>
 public class Spell
 {
+    static string strVisit = "拜访";
+    static string strPurge = "净化";
+    static string strPrayer = "祈祷";
+    static string strBlessing = "神佑";
+    static string strConsecration = "奉献";
+    static string strDevourment = "吞噬";
+    static string strInfestation = "感染";
+    static string strSilverBullet = "银弹";
+    static string strCompass = "罗盘";
+    static string strHolyWater = "圣水";
+    static string strInheritance = "传承";
+    static string strGuard = "守护";
+    static string strFire = "火刑";
+    static string strSpy = "窥探";
+
     public string strSpellName;
     public int intCaster;
     public int intTarget;
@@ -75,6 +90,25 @@ public class Spell
 
     public static bool canCast(int intSourceIndex, int intTargetIndex, int intSpellIndex, Status statCurrent)
     {
+        if (statCurrent.splLstSpell[intSpellIndex].strSpellName == strVisit&&statCurrent.chaLstCharacter[intSourceIndex].intVisitLimit==0)
+        {
+            return false;
+        }
+        if (statCurrent.splLstSpell[intSpellIndex].strSpellName == strHolyWater && statCurrent.chaLstCharacter[intSourceIndex].intHolyWaterLimit == 0)
+        {
+            return false;
+        }
+        if (statCurrent.chaLstCharacter[intSourceIndex].intDebuff2 == 2 && statCurrent.chaLstCharacter[intSourceIndex].intRole == 2)
+        {
+            if (statCurrent.splLstSpell[intSpellIndex].strSpellName == strCompass)
+            {
+                return false;
+            }
+            else if (statCurrent.splLstSpell[intSpellIndex].strSpellName == strGuard)
+            {
+                return false;
+            }
+        }
         string strSource = Convert.ToString(statCurrent.chaLstCharacter[intSourceIndex].intRole, 2).PadLeft(9, '0');
         string strSourceAllowed = Convert.ToString(statCurrent.splLstSpell[intSpellIndex].intCaster, 2).PadLeft(9, '0');
         string strTarget = "";

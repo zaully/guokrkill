@@ -13,6 +13,7 @@ public class Character
     static int Hunter = 2;
     static int Villager = 1;
     static int Judge = 16;
+    static int Monster = 32;
 
     public string strCharacterName;
     public int intInitialRole;
@@ -26,7 +27,12 @@ public class Character
     public int intDebuff3Counter;
     public double dbDevourResist;
     public double dbInfestResist;
+    public double dbDevourBuff;
+    public double dbInfestBuff;
     public double dbSilverBulletResist;
+    public int intVisitLimit;
+    public int intHolyWaterLimit;
+    public int intDeathCause;
 
 	public Character()
 	{
@@ -45,7 +51,12 @@ public class Character
         this.intDebuff3Counter = 0;
         this.dbDevourResist = 0.0;
         this.dbInfestResist = 0.0;
+        this.dbDevourBuff = 0.0;
+        this.dbInfestBuff = 0.0;
         this.dbSilverBulletResist = 0.0;
+        this.intHolyWaterLimit = 0;
+        this.intVisitLimit = 0;
+        this.intDeathCause = 0;
 	}
 
     public static int findIndexForCharacter(string strCharacterName, List<Character> chaLstCharaters)
@@ -65,27 +76,66 @@ public class Character
         if (cha.intDebuff1 == 1)
         {
             cha.intDebuffCount--;
+            cha.intDebuff1 = 0;
+            cha.intDebuff1Counter = 0;
         }
-        cha.intDebuff1 = 0;
-        cha.intDebuff1Counter = 0;
+        return cha;
+    }
+
+    public static Character setConfused(Character cha)
+    {
+        if (cha.intDebuff2 == 0 && cha.intRole == Werewolf)
+        {
+            cha.intDebuffCount++;
+            cha.intDebuff2 = 4;
+            cha.intDebuff2Counter++;
+        }
+        return cha;
+    }
+
+    public static Character setBlessed(Character cha)
+    {
+        if (cha.intRole != Werewolf && cha.intDebuff1 != 1)
+        {
+            cha.intDebuff3 = 5;
+            cha.intDebuff3Counter = 2;
+        }
         return cha;
     }
     
-    public static Character setDead(Character cha)
+    public static Character setDead(Character cha, int intDeathCau)
     {
         cha.intDebuff1 = -1;
-        cha.intDebuff2 = 0;
+        if (cha.intDebuff2 != 2)
+        {
+            cha.intDebuff2 = 0;
+        }
         cha.intDebuff3 = 0;
         cha.intDebuff1Counter = 0;
         cha.intDebuff2Counter = 0;
         cha.intDebuff3Counter = 0;
         cha.intDebuffCount = 1;
+        cha.intDeathCause = intDeathCau;
+        return cha;
+    }
+
+    public static Character setDisguard(Character cha)
+    {
+        if (cha.dbDevourResist == 0.3)
+        {
+            cha.dbDevourResist = 0;
+            cha.dbInfestResist = 0;
+        }
         return cha;
     }
 
     public static Character setHunter(Character cha)
     {
-        cha.intRole = Hunter;
+        if (cha.intRole == 1 && cha.intDebuff1 == 0)
+        {
+            cha.intRole = Hunter;
+            cha.intDebuff2 = 2;
+        }
         return cha;
     }
 

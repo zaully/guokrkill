@@ -13,6 +13,8 @@ public partial class Judge_Brain : System.Web.UI.Page
     static int Hunter = 2;
     static int Villager = 1;
     static int Judge = 16;
+    static int Monster = 32;
+
     static string strVisit = "拜访";
     static string strPurge = "净化";
     static string strPrayer = "祈祷";
@@ -25,6 +27,7 @@ public partial class Judge_Brain : System.Web.UI.Page
     static string strHolyWater = "圣水";
     static string strInheritance = "传承";
     static string strFire = "火刑";
+    static string strSpy = "窥探";
 
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -166,6 +169,9 @@ public partial class Judge_Brain : System.Web.UI.Page
         ddlJudgeTarget.Enabled = true;
         ddlJudgeTarget.Items.Clear();
         ddlJudgeTarget.Items.Add("");
+        ddlInheritanceFrom.Visible = false;
+        ddlInheritanceFrom.Items.Clear();
+        ddlInheritanceFrom.Items.Add("");
         for (int i = 0; i < thisStat.chaLstCharacter.Count; i++)
         {
             if (thisStat.chaLstCharacter[i].intDebuff1 != -1)
@@ -258,255 +264,44 @@ public partial class Judge_Brain : System.Web.UI.Page
             strLstActions.Add(lbActions.Items[i].ToString());
         }
         List<Actions> actLstActions = Actions.initialization(strLstActions, ((Status)this.Session["Status"]));
-        List<Character> chaLstAllCharacters = ((Status)this.Session["Status"]).chaLstCharacter;
-        List<Spell> splLstAllSpells = ((Status)this.Session["Status"]).splLstSpell;
-        for (int i = 0; i < actLstActions.Count; i++)
-        {
-            if (actLstActions[i].intResult == 0)
-            {
-                if (Character.findRoleForCharacter(actLstActions[i].strCharacterName, chaLstAllCharacters) == Priest)
-                {
-                    //处理牧师特有技能
-                    //净化
-                    if (actLstActions[i].strSpellName == strPurge)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strPurge, splLstAllSpells) && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == 1)
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination] = Character.setCured(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】的净化成功，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】的【感染】痊愈了" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != -1)
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了净化，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】好像本来就很健康" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】的净化失败" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                    //祈祷
-                    else if (actLstActions[i].strSpellName == strPrayer)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strPurge, splLstAllSpells))
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination].dbDevourResist = 0.3;
-                            chaLstAllCharacters[actLstActions[i].intDestination].dbInfestResist = 0.3;
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】正在祈祷，获得了神的庇护" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】正在祈祷，但神没有回应" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                    //奉献
-                    else if (actLstActions[i].strSpellName == strConsecration)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strConsecration, splLstAllSpells))
-                        {
-                            chaLstAllCharacters[actLstActions[i].intCharacter] = Character.setDead(chaLstAllCharacters[actLstActions[i].intCharacter]);
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】奉献啦！！！" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】奉献失败，倒霉，想死都不行" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                    //神佑
-                    else if (actLstActions[i].strSpellName == strBlessing)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strBlessing, splLstAllSpells))
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination].dbDevourResist = 0.3;
-                            chaLstAllCharacters[actLstActions[i].intDestination].dbInfestResist = 0.3;
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了神佑，狼人对【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】的攻击被削弱了。" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】的神佑没能得到神的回应。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < actLstActions.Count; i++)
-        {
-            if (actLstActions[i].intResult == 0)
-            {
-                if (Character.findRoleForCharacter(actLstActions[i].strCharacterName, chaLstAllCharacters) == Werewolf)
-                {
-                    //处理狼人特有技能
-                    //吞噬
-                    if (actLstActions[i].strSpellName == strDevourment)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strDevourment, splLstAllSpells) - chaLstAllCharacters[actLstActions[i].intDestination].dbDevourResist && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1!=-1)
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination] = Character.setDead(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了吞噬，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】死亡。" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == -1)
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了吞噬，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已死亡。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了吞噬，不过【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】幸运地逃过了一劫。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                    //感染
-                    if (actLstActions[i].strSpellName == strInfestation)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strInfestation, splLstAllSpells) - chaLstAllCharacters[actLstActions[i].intDestination].dbInfestResist && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != -1 && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != 1)
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination] = Character.setInfested(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】现在的状态是【感染】。" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == -1)
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已死亡。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                        else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == 1)
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已被感染了。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了感染，不过【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】幸运地逃过了一劫。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < actLstActions.Count; i++)
-        {
-            if (actLstActions[i].intResult == 0)
-            {
-                if (Character.findRoleForCharacter(actLstActions[i].strCharacterName, chaLstAllCharacters) == Hunter)
-                {
-                    //处理猎人特有技能
-                    //银弹
-                    if (actLstActions[i].strSpellName == strSilverBullet)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strSilverBullet, splLstAllSpells) && chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 != -1)
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination] = Character.setDead(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了银弹，【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】死亡。" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else if (chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1 == -1)
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了银弹，但【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】早已死亡。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】施放了银弹，不过【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】幸运地逃过了一劫。" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                        //圣水
-                    else if (actLstActions[i].strSpellName == strHolyWater)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strHolyWater, splLstAllSpells)&&chaLstAllCharacters[actLstActions[i].intDestination].intDebuff1==1)
-                        {
-                            chaLstAllCharacters[actLstActions[i].intDestination] = Character.setCured(chaLstAllCharacters[actLstActions[i].intDestination]);
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】喝下了圣水，【感染】的症状消失了。" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】喝下了圣水，咦？没什么效果啊。到底是圣水过期了还是他本来就没病？" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                    //罗盘
-                    else if (actLstActions[i].strSpellName == strCompass)
-                    {
-                        if (rand.NextDouble() <= Spell.getChance(strCompass, splLstAllSpells))
-                        {
-                            int intClueIndex = -1;
-                            while (intClueIndex == -1)
-                            {
-                                intClueIndex = Character.clueAbout(chaLstAllCharacters, rand);
-                            }
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】使用了罗盘，获得了关于【" + chaLstAllCharacters[intClueIndex].strCharacterName + "】的真实线索！" + Environment.NewLine;
-                            actLstActions[i].intResult = 1;
-                        }
-                        else
-                        {
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】使用了罗盘，咦？没有反应？" + Environment.NewLine;
-                            actLstActions[i].intResult = -1;
-                        }
-                    }
-                }
-            }
-        }
-        for (int i = 0; i < actLstActions.Count; i++)
-        {
-            if (actLstActions[i].intResult == 0)
-            {
-                if (actLstActions[i].strSpellName == strVisit)
-                {
-                    //处理拜访
-                    for (int j = 0; j < actLstActions.Count; j++)
-                    {
-                        if (actLstActions[j].strCharacterName == chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName)
-                        {
-                            actLstActions[i].intResult = 1;
-                            tbResult.Text += "【" + actLstActions[i].strCharacterName + "】拜访了【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】，结果对方不在家！" + Environment.NewLine;
-                            break;
-                        }
-                    }
-                    if (actLstActions[i].intResult == 0)
-                    {
-                        tbResult.Text += "【" + actLstActions[i].strCharacterName + "】拜访了【" + chaLstAllCharacters[actLstActions[i].intDestination].strCharacterName + "】，双方进行了愉快的会谈！" + Environment.NewLine;
-                        actLstActions[i].intResult = 1;
-                    }
-                }
-            }
-        }
+        tbResult.Text = ((Status)this.Session["Status"]).CalculateResult(actLstActions);
+        Status thisStatus = (Status)this.Session["Status"];
         //处理感染、饥饿、迷惘、怜悯等
-        for (int i = 0; i < chaLstAllCharacters.Count; i++)
+        for (int i = 0; i < thisStatus.chaLstCharacter.Count; i++)
         {
-            if (chaLstAllCharacters[i].intDebuff1 > 0)
+            if (thisStatus.chaLstCharacter[i].intDebuff1 > 0)
             {
-                chaLstAllCharacters[i].intDebuff1Counter--;
+                thisStatus.chaLstCharacter[i].intDebuff1Counter--;
             }
-            if (chaLstAllCharacters[i].intDebuff2 > 0)
+            if (thisStatus.chaLstCharacter[i].intDebuff3 > 0)
             {
-                chaLstAllCharacters[i].intDebuff2Counter--;
+                thisStatus.chaLstCharacter[i].intDebuff3Counter--;
             }
-            if (chaLstAllCharacters[i].intDebuff3 > 0)
+            if (thisStatus.chaLstCharacter[i].intDebuff1 == 1)
             {
-                chaLstAllCharacters[i].intDebuff3Counter--;
-            }
-            if (chaLstAllCharacters[i].intDebuff1 == 1)
-            {
-                if (chaLstAllCharacters[i].intDebuff1Counter == 0)
+                if (thisStatus.chaLstCharacter[i].intDebuff1Counter == 0)
                 {
-                    chaLstAllCharacters[i].intDebuff1Counter--;
-                    chaLstAllCharacters[i].intDebuff1 = 0;
-                    chaLstAllCharacters[i].intRole = Werewolf;
-                    tbResult.Text += "【" + chaLstAllCharacters[i].strCharacterName + "】的身体产生变异，新的【狼人】出现了！";
+                    thisStatus.chaLstCharacter[i].intDebuffCount--;
+                    thisStatus.chaLstCharacter[i].intDebuff1 = 0;
+                    thisStatus.chaLstCharacter[i].intRole = Werewolf;
+                    tbResult.Text += "【" + thisStatus.chaLstCharacter[i].strCharacterName + "】的身体产生变异，新的【狼人】出现了！" + Environment.NewLine;
                 }
                 else
                 {
-                    tbResult.Text += "【" + chaLstAllCharacters[i].strCharacterName + "】的感染期还剩 " + Convert.ToString(chaLstAllCharacters[i].intDebuff1Counter + 1) + " 天";
+                    tbResult.Text += "【" + thisStatus.chaLstCharacter[i].strCharacterName + "】的感染期还剩 " + Convert.ToString(thisStatus.chaLstCharacter[i].intDebuff1Counter) + " 天" + Environment.NewLine;
+                }
+            }
+            if (thisStatus.chaLstCharacter[i].intDebuff3 == 5)
+            {
+                if (thisStatus.chaLstCharacter[i].intDebuff3Counter == 0)
+                {
+                    thisStatus.chaLstCharacter[i].intDebuffCount--;
+                    thisStatus.chaLstCharacter[i].intDebuff3 = 0;
+                    tbResult.Text += "【" + thisStatus.chaLstCharacter[i].strCharacterName + "】的【神佑】消失了。" + Environment.NewLine;
+                }
+                else
+                {
+                    tbResult.Text += "【" + thisStatus.chaLstCharacter[i].strCharacterName + "】的【神佑】还剩 " + Convert.ToString(thisStatus.chaLstCharacter[i].intDebuff3Counter) + " 天" + Environment.NewLine;
                 }
             }
         }
@@ -514,7 +309,7 @@ public partial class Judge_Brain : System.Web.UI.Page
         lDayNo.Text = (Convert.ToInt16(lDayNo.Text) + 1).ToString();
         int intGameNo = Convert.ToInt16(lGameNo.Text);
         int intDayNo = Convert.ToInt16(lDayNo.Text);
-        Status.updateIntoDatabase(intGameNo, Convert.ToInt16(lDayNo.Text), chaLstAllCharacters);
+        Status.updateIntoDatabase(intGameNo, Convert.ToInt16(lDayNo.Text), thisStatus.chaLstCharacter);
         tbPlayerList.Text = ((Status)this.Session["Status"]).updateAll(intGameNo, intDayNo);
         newDay(intDayNo, ((Status)this.Session["Status"]));
         Status.updateLogs(intGameNo, intDayNo, tbResult.Text);
@@ -528,16 +323,27 @@ public partial class Judge_Brain : System.Web.UI.Page
             ddlJudgeAction.SelectedValue = "";
             return;
         }
+        tbResult.Text = "";
         if (ddlJudgeAction.SelectedValue == strFire)
         {
             int deadIndex = Character.findIndexForCharacter(ddlJudgeTarget.SelectedValue, ((Status)this.Session["Status"]).chaLstCharacter);
-            ((Status)this.Session["Status"]).chaLstCharacter[deadIndex] = Character.setDead(((Status)this.Session["Status"]).chaLstCharacter[deadIndex]);
+            ((Status)this.Session["Status"]).chaLstCharacter[deadIndex] = Character.setDead(((Status)this.Session["Status"]).chaLstCharacter[deadIndex], 3);
+            tbResult.Text += "【" + ((Status)this.Session["Status"]).chaLstCharacter[deadIndex].strCharacterName + "】被大家投死啦" + Environment.NewLine;
         }
         if (ddlJudgeAction.SelectedValue == strInheritance)
         {
+            if (ddlInheritanceFrom.SelectedValue == "")
+            {
+                return;
+            }
             int index2beHunter = Character.findIndexForCharacter(ddlJudgeTarget.SelectedValue, ((Status)this.Session["Status"]).chaLstCharacter);
-            ((Status)this.Session["Status"]).chaLstCharacter[index2beHunter] = Character.setHunter(((Status)this.Session["Status"]).chaLstCharacter[index2beHunter]);
+            //((Status)this.Session["Status"]).chaLstCharacter[index2beHunter] = Character.setHunter(((Status)this.Session["Status"]).chaLstCharacter[index2beHunter]);
+            ((Status)this.Session["Status"]).Inherit(index2beHunter, Character.findIndexForCharacter(ddlInheritanceFrom.SelectedValue, ((Status)this.Session["Status"]).chaLstCharacter));
+            tbResult.Text += "【" + ((Status)this.Session["Status"]).chaLstCharacter[index2beHunter].strCharacterName + "】接下了【" + ((Status)this.Session["Status"]).chaLstCharacter[Character.findIndexForCharacter(ddlInheritanceFrom.SelectedValue, ((Status)this.Session["Status"]).chaLstCharacter)].strCharacterName + "】的衣钵！成为了新一代的猎人。" + Environment.NewLine;
         }
+        int intGameNo = Convert.ToInt16(lGameNo.Text);
+        int intDayNo = Convert.ToInt16(lDayNo.Text);
+        Status.updateLogs(intGameNo, intDayNo, tbResult.Text);
         newDay(0, ((Status)this.Session["Status"]));
         tbPlayerList.Text = ((Status)this.Session["Status"]).updateFromStatus();
     }
@@ -587,5 +393,30 @@ public partial class Judge_Brain : System.Web.UI.Page
                 ddlTarget.Items.Add(thisStat.chaLstCharacter[i].strCharacterName);
             }
         }
+    }
+    protected void ddlJudgeAction_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        if (ddlJudgeAction.SelectedValue == strInheritance)
+        {
+            ddlInheritanceFrom.Visible = true;
+            ddlInheritanceFrom.Items.Clear();
+            ddlInheritanceFrom.Items.Add("");
+            Status thisStat = (Status)this.Session["Status"];
+            for (int i = 0; i < thisStat.chaLstCharacter.Count; i++)
+            {
+                if (thisStat.chaLstCharacter[i].intRole == Hunter && thisStat.chaLstCharacter[i].intDebuff1 == -1 && thisStat.chaLstCharacter[i].intDebuff2 == 0 && thisStat.chaLstCharacter[i].intDeathCause == 1)
+                {
+                    ddlInheritanceFrom.Items.Add(thisStat.chaLstCharacter[i].strCharacterName);
+                }
+            }
+        }
+        else
+        {
+            ddlInheritanceFrom.Visible = false;
+        }
+    }
+    protected void ddlJudgeTarget_SelectedIndexChanged(object sender, EventArgs e)
+    {
+
     }
 }

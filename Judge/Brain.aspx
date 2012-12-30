@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <link href="~/Styles/Style.css" rel="Stylesheet" type="text/css" />
-    <title>果壳魅影上帝之脑0.82版</title>
+    <title>果壳魅影2.02版上帝之脑 version0.85</title>
 </head>
 <body>
     <form id="form1" runat="server">
@@ -23,7 +23,8 @@
                     <div id="divPlayerList">
                     <div>
                         <asp:Label ID="lHintPlayerList" runat="server" Text="请输入玩家列表，以分号(;)分隔"></asp:Label></div>
-                        <asp:TextBox ID="tbPlayerList" runat="server" Height="300px" TextMode="MultiLine" Width="90%"></asp:TextBox>
+                        <asp:TextBox ID="tbPlayerList" runat="server" Height="400px" 
+                            TextMode="MultiLine" Width="90%"></asp:TextBox>
                     </div>
                     <div id="divNewGame">
                         <div style="font-size: small">
@@ -66,9 +67,16 @@
                             <asp:Button ID="btnCalculate" runat="server" Text="Calculate" Enabled="False" 
                                 onclick="btnCalculate_Click" /></div>
                         <div>城主动作区<br />
-                            <asp:DropDownList ID="ddlJudgeAction" runat="server" Width="80px">
+                            <asp:DropDownList ID="ddlJudgeAction" runat="server" Width="80px" 
+                                AutoPostBack="True" 
+                                onselectedindexchanged="ddlJudgeAction_SelectedIndexChanged">
                             </asp:DropDownList>
-                            <asp:DropDownList ID="ddlJudgeTarget" runat="server" Width="150px">
+                            <asp:DropDownList ID="ddlJudgeTarget" runat="server" Width="150px" 
+                                AutoPostBack="True" 
+                                onselectedindexchanged="ddlJudgeTarget_SelectedIndexChanged">
+                            </asp:DropDownList>
+                            <asp:DropDownList ID="ddlInheritanceFrom" runat="server" Visible="False" 
+                                Width="150px">
                             </asp:DropDownList>
                         </div>
                         <div class="alignright">
