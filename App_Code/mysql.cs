@@ -11,11 +11,11 @@ using MySql.Data.MySqlClient;
 /// 
 public class mysql
 {
-    //const string strDataSource = 
-    const string strDataSource = 
-    const string strDatabase = 
-    const string strDatabaseUserID = 
-    const string strPW = 
+    const string strDataSource = "localhost";
+    //const string strDataSource = "";
+    const string strDatabase = "";
+    const string strDatabaseUserID = "";
+    const string strPW = "";
 
 	public mysql()
 	{

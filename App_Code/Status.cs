@@ -468,17 +468,25 @@ public class Status
                 {
                     //处理挡牙
                     int intIsTransferred = 0;
+                    int intTransCount = 0;
+                    List<int> intLstTrans = new List<int>();
                     for (int j = 0; j < actLstActions.Count; j++)
                     {
-                        if (actLstActions[j].strSpellName == strVisit && actLstActions[j].intDestination == actLstActions[i].intDestination)
+                        if (actLstActions[j].strSpellName == strVisit && actLstActions[j].intDestination == actLstActions[i].intDestination && this.chaLstCharacter[actLstActions[j].intCharacter].intDebuff1 != -1)
                         {
-                            if (rand.NextDouble() <= 0.5)
-                            {
-                                actLstActions[i].intDestination = actLstActions[j].intCharacter;
-                                intIsTransferred = 1;
-                                actLstActions[i].strSpellName = strDevourment;
-                            }
+                            intTransCount++;
+                            intLstTrans.Add(actLstActions[j].intCharacter);
+                            intIsTransferred = 1;
                         }
+                    }
+                    if (intIsTransferred == 1 && rand.NextDouble() <= 0.5)
+                    {
+                        actLstActions[i].intDestination = intLstTrans[rand.Next(intLstTrans.Count)];
+                        actLstActions[i].strSpellName = strDevourment;
+                    }
+                    else
+                    {
+                        intIsTransferred = 0;
                     }
                     //吞噬
                     if (actLstActions[i].strSpellName == strDevourment)
@@ -579,15 +587,25 @@ public class Status
                     if (actLstActions[i].strSpellName == strSilverBullet)
                     {
                         //处理挡枪
+                        int intIsTransferred = 0;
+                        int intTransCount = 0;
+                        List<int> intLstTrans = new List<int>();
                         for (int j = 0; j < actLstActions.Count; j++)
                         {
-                            if (actLstActions[j].strSpellName == strVisit && actLstActions[j].intDestination == actLstActions[i].intDestination)
+                            if (actLstActions[j].strSpellName == strVisit && actLstActions[j].intDestination == actLstActions[i].intDestination && this.chaLstCharacter[actLstActions[j].intCharacter].intDebuff1 != -1)
                             {
-                                if (rand.NextDouble() <= 0.5)
-                                {
-                                    actLstActions[i].intDestination = actLstActions[j].intCharacter;
-                                }
+                                intTransCount++;
+                                intLstTrans.Add(actLstActions[j].intCharacter);
+                                intIsTransferred = 1;
                             }
+                        }
+                        if (intIsTransferred == 1 && rand.NextDouble() <= 0.5)
+                        {
+                            actLstActions[i].intDestination = intLstTrans[rand.Next(intLstTrans.Count)];
+                        }
+                        else
+                        {
+                            intIsTransferred = 0;
                         }
                         if (rand.NextDouble() <= Spell.getChance(strSilverBullet, this.splLstSpell) && this.chaLstCharacter[actLstActions[i].intDestination].intDebuff1 != -1)
                         {
@@ -667,7 +685,7 @@ public class Status
                         strResult += "【" + actLstActions[i].strCharacterName + "】拜访了【" + this.chaLstCharacter[actLstActions[i].intDestination].strCharacterName + "】，双方进行了愉快的会谈！" + Environment.NewLine;
                         actLstActions[i].intResult = 1;
                     }
-                    this.chaLstCharacter[actLstActions[i].intDestination].intVisitLimit--;
+                    this.chaLstCharacter[actLstActions[i].intCharacter].intVisitLimit--;
                 }
             }
         }
